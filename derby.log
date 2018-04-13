@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Tue Nov 29 21:05:31 CST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0158-b030-b094-000019414830 
+on database directory /home/hadoop/workspace/git/tsfile/delta-spark/metastore_db with class loader org.apache.spark.sql.hive.client.IsolatedClientLoader$$anon$1@5c5c7cc4 
+Loaded from file:/home/hadoop/workspace/spark-2.0.1/jars/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_111-8u111-b14-2ubuntu0.16.04.2-b14
+user.dir=/home/hadoop/workspace/git/tsfile/delta-spark
+os.name=Linux
+os.arch=amd64
+os.version=4.4.0-47-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
