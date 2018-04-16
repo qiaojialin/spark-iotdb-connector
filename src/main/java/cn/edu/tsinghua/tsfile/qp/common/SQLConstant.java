@@ -8,10 +8,14 @@ import java.util.Map;
  *
  */
 public class SQLConstant {
+    public static final String NEED_NOT_TO_PRINT_TIMESTAMP = "AGGREGATION";
+
     public static final String DELTA_OBJECT_NAME = "delta_object_name";
     public static final String REGEX_PATH_SEPARATOR = "\\.";
     public static final String PATH_SEPARATOR = ".";
     public static final String RESERVED_TIME = "time";
+    public static final String TIMESTAMP_STR = "Time"; // @iotdb-jdbc
+    public static final String NULL_STR = "null"; // @iotdb-jdbc
     public static final String RESERVED_FREQ = "freq";
     public static final String RESERVED_DELTA_OBJECT = "delta_object";
     public static final String INT32 = "INT32";

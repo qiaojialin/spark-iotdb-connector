@@ -8,7 +8,7 @@ public class QueryProcessorException extends Exception {
     private static final long serialVersionUID = -8987915921329335088L;
 
     private String errMsg;
-    QueryProcessorException(String msg) {
+    public QueryProcessorException(String msg) {
         super(msg);
         this.errMsg = msg;
     }
