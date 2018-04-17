@@ -1,162 +1,79 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>cn.edu.tsinghua</groupId>
-  <artifactId>delta.spark</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <inceptionYear>2008</inceptionYear>
+  <artifactId>iotdb-spark-connector</artifactId>
+  <version>0.5.0</version>
+  <packaging>jar</packaging>
 
   <properties>
-    <scala.version>2.11.8</scala.version>
-    <tsfile.timeseries.version>0.0.1-SNAPSHOT</tsfile.timeseries.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hadoop.version>2.7.3</hadoop.version>
+    <compile.version>1.8</compile.version>
+    <spark.version>2.0.1</spark.version>
+    <junit.version>4.12</junit.version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>scala-tools.org</id>
-      <name>Scala-Tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>scala-tools.org</id>
-      <name>Scala-Tools Maven2 Repository</name>
-      <url>http://scala-tools.org/repo-releases</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencies>
-    <!-- https://mvnrepository.com/artifact/org.scala-lang/scala-compiler -->
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala.version}</version>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20170516</version>
     </dependency>
-
     <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-reflect</artifactId>
-      <version>${scala.version}</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>cn.edu.tsinghua</groupId>
+      <artifactId>tsfile</artifactId>
+      <version>0.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>cn.edu.tsinghua</groupId>
+      <artifactId>iotdb-jdbc</artifactId>
+      <version>0.5.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>${hadoop.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_2.11</artifactId>
+      <version>${spark.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.11</artifactId>
+      <version>${spark.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
+      <version>2.11.8</version>
     </dependency>
-
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_2.11</artifactId>
       <version>3.0.0</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>org.scala-lang</groupId>
-          <artifactId>scala-library</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
-
-    <!-- https://mvnrepository.com/artifact/junit/junit -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-core_2.10 -->
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-core_2.11</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.scalatest</groupId>
-          <artifactId>scalatest_2.10</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.scalatest</groupId>
-          <artifactId>scalatest_2.11</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.scala-lang</groupId>
-          <artifactId>scalap</artifactId>
-        </exclusion>
-      </exclusions>
-      <version>2.0.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-sql_2.10 -->
-    <dependency>
-      <groupId>org.apache.spark</groupId>
-      <artifactId>spark-sql_2.11</artifactId>
-      <version>2.0.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-client</artifactId>
-      <version>2.6.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.7</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.corp.tsfile</groupId>
-      <artifactId>tsfile-jdbc</artifactId>
-      <version>${tsfile.jdbc.version}</version>
-    </dependency>
-      <dependency>
-          <groupId>org.apache.hadoop</groupId>
-          <artifactId>hadoop-core</artifactId>
-          <version>1.2.1</version>
-          <scope>test</scope>
-      </dependency>
   </dependencies>
 
   <build>
-    <sourceDirectory>src/main/scala</sourceDirectory>
-    <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
-      <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compile</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <scalaVersion>${scala.version}</scalaVersion>
-          <args>
-            <arg>-target:jvm-1.8</arg>
-          </args>
-        </configuration>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.5.5</version>
         <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.xxg.Main</mainClass>
-            </manifest>
-          </archive>
           <descriptorRefs>
             <descriptorRef>jar-with-dependencies</descriptorRef>
           </descriptorRefs>
@@ -171,17 +88,44 @@
           </execution>
         </executions>
       </plugin>
-    </plugins>
-  </build>
-  <reporting>
-    <plugins>
       <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>compile-scala</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>add-source</goal>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile-scala</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>add-source</goal>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <scalaVersion>${scala.version}</scalaVersion>
+          <scalaVersion>2.11.8</scalaVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>${compile.version}</source>
+          <target>${compile.version}</target>
+          <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
     </plugins>
-  </reporting>
+  </build>
+
+
 </project>
