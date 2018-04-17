@@ -1,3 +1,12 @@
+## 版本
+
+The versions required for Spark and Java are as follow:
+
+| Spark Version | Scala Version | Java Version | TsFile |
+| ------------- | ------------- | ------------ |------------ |
+| `2.0-2.1`        | `2.11`        | `1.8`        | `0.5.0`|
+
+
 ## 安装
 mvn clean scala:compile compile install
 
