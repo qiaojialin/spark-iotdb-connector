@@ -1,31 +1,30 @@
-package cn.edu.tsinghua.tsfile
+package cn.edu.tsinghua.iotdb
 
 import org.apache.spark.Partition
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{Row, SQLContext, SparkSession}
 import org.apache.spark.sql.sources.{BaseRelation, Filter, PrunedFilteredScan}
-import org.apache.spark.sql.types.{IntegerType, LongType, StructField, StructType}
+import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.{Row, SQLContext, SparkSession}
 import org.slf4j.LoggerFactory
-import cn.edu.tsinghua.tsfile.qp.common.SQLConstant
 
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
+import scala.collection.mutable.ArrayBuffer
 
 /**
   * Created by qjl on 16-8-25.
   */
-private case class TSFilePartitioningInfo(
+private case class IoTDBPartitioningInfo(
                                            start: Long,
                                            end: Long,
                                            numPartitions: Int)
 
-private object TSFileRelation {
+private object IoTDBRelation {
 
-  private final val logger = LoggerFactory.getLogger(classOf[TSFileRelation])
+  private final val logger = LoggerFactory.getLogger(classOf[IoTDBRelation])
 
-  def getPartitions(partitionInfo: TSFilePartitioningInfo): Array[Partition] = {
+  def getPartitions(partitionInfo: IoTDBPartitioningInfo): Array[Partition] = {
     if (partitionInfo == null || partitionInfo.numPartitions <= 1 ||
       partitionInfo.start == partitionInfo.end) {
-      return Array[Partition](TSFilePartition(null, 0, 0L, 0L))
+      return Array[Partition](IoTDBPartition(null, 0, 0L, 0L))
     }
     val start = partitionInfo.start
     val end = partitionInfo.end
@@ -58,11 +57,11 @@ private object TSFileRelation {
       if(i == 0){
 
         where = s"${SQLConstant.RESERVED_TIME} >= $currentValue and ${SQLConstant.RESERVED_TIME} <= ${currentValue + length}"
-        partitions += TSFilePartition(where, i, currentValue, currentValue + length)
+        partitions += IoTDBPartition(where, i, currentValue, currentValue + length)
       }
       else {
         where = s"${SQLConstant.RESERVED_TIME} > $currentValue and ${SQLConstant.RESERVED_TIME} <= ${currentValue + length}"
-        partitions += TSFilePartition(where, i, currentValue+1, currentValue + length)
+        partitions += IoTDBPartition(where, i, currentValue+1, currentValue + length)
       }
 
       i = i + 1
@@ -72,12 +71,12 @@ private object TSFileRelation {
   }
 }
 
-class TSFileRelation protected[tsfile](val options: TSFileOptions)(@transient val sparkSession: SparkSession)
+class IoTDBRelation protected[iotdb](val options: IoTDBOptions)(@transient val sparkSession: SparkSession)
   extends BaseRelation with PrunedFilteredScan {
 
   override def sqlContext: SQLContext = sparkSession.sqlContext
 
-  private final val logger = LoggerFactory.getLogger(classOf[TSFileRelation])
+  private final val logger = LoggerFactory.getLogger(classOf[IoTDBRelation])
 
   override def schema: StructType = {
     Converter.toSparkSchema(options)
@@ -88,11 +87,11 @@ class TSFileRelation protected[tsfile](val options: TSFileOptions)(@transient va
     val end: Long = options.upperBound.toLong
     val numPartition = options.numPartition.toInt
 
-    val partitionInfo = TSFilePartitioningInfo(start, end, numPartition)
+    val partitionInfo = IoTDBPartitioningInfo(start, end, numPartition)
 
-    val parts = TSFileRelation.getPartitions(partitionInfo)
+    val parts = IoTDBRelation.getPartitions(partitionInfo)
 
-    new TSFileRDD(sparkSession.sparkContext,
+    new IoTDBRDD(sparkSession.sparkContext,
       options,
       schema,
       requiredColumns,

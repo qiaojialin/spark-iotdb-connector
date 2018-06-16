@@ -1,7 +1,7 @@
-package cn.edu.tsinghua.tsfile
+package cn.edu.tsinghua.iotdb
 
 import java.sql._
-import cn.edu.tsinghua.tsfile.qp.common.SQLConstant
+
 import org.apache.spark.sql.types._
 import org.slf4j.LoggerFactory
 import java.sql.Statement
@@ -32,7 +32,7 @@ object Converter {
     r
   }
 
-  def toSparkSchema(options: TSFileOptions): StructType = {
+  def toSparkSchema(options: IoTDBOptions): StructType = {
 
     Class.forName("cn.edu.tsinghua.iotdb.jdbc.TsfileDriver")
     val sqlConn: Connection = DriverManager.getConnection(options.url, options.user, options.password)

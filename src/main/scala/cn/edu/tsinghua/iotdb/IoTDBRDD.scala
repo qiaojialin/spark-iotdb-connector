@@ -1,4 +1,4 @@
-package cn.edu.tsinghua.tsfile
+package cn.edu.tsinghua.iotdb
 
 import org.apache.spark.{Partition, SparkContext, TaskContext}
 import org.apache.spark.rdd.RDD
@@ -9,16 +9,12 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.types._
 
 
-/**
-  * Created by qjl on 16-11-3.
-  */
-
-//TSFile partition
-case class TSFilePartition(where: String, id: Int, start: java.lang.Long, end:java.lang.Long) extends Partition {
+//IoTDB data partition
+case class IoTDBPartition(where: String, id: Int, start: java.lang.Long, end:java.lang.Long) extends Partition {
   override def index: Int = id
 }
 
-object TSFileRDD {
+object IoTDBRDD {
 
   private def pruneSchema(schema: StructType, columns: Array[String]): StructType = {
     val fieldMap = Map(schema.fields.map(x => x.name -> x): _*)
@@ -27,13 +23,13 @@ object TSFileRDD {
 
 }
 
-class TSFileRDD private[tsfile](
-                                sc: SparkContext,
-                                options: TSFileOptions,
-                                schema : StructType,
-                                requiredColumns: Array[String],
-                                filters: Array[Filter],
-                                partitions: Array[Partition])
+class IoTDBRDD private[iotdb](
+                                 sc: SparkContext,
+                                 options: IoTDBOptions,
+                                 schema : StructType,
+                                 requiredColumns: Array[String],
+                                 filters: Array[Filter],
+                                 partitions: Array[Partition])
   extends RDD[Row](sc, Nil) {
 
   override def compute(split: Partition, context: TaskContext): Iterator[Row] = new Iterator[Row] {
@@ -42,9 +38,8 @@ class TSFileRDD private[tsfile](
     var nextValue: Row = null
     val inputMetrics = context.taskMetrics().inputMetrics
 
-    val part = split.asInstanceOf[TSFilePartition]
+    val part = split.asInstanceOf[IoTDBPartition]
 
-    println(">>>>>>>@@@@@@@@@@@@")
     var taskInfo: String = _
     Option(TaskContext.get()).foreach { taskContext => {
       taskContext.addTaskCompletionListener { _ => conn.close()}
@@ -59,7 +54,7 @@ class TSFileRDD private[tsfile](
 
     var rs : ResultSet = stmt.executeQuery(options.sql)
     println(options.sql)
-    val prunedSchema = TSFileRDD.pruneSchema(schema, requiredColumns)
+    val prunedSchema = IoTDBRDD.pruneSchema(schema, requiredColumns)
     private val rowBuffer = Array.fill[Any](prunedSchema.length)(null)
 
     def getNext(): Row = {

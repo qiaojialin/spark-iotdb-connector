@@ -1,9 +1,9 @@
-package cn.edu.tsinghua.tsfile
+package cn.edu.tsinghua.iotdb
 
 /**
   * Created by qjl on 16-11-4.
   */
-class TSFileOptions  (
+class IoTDBOptions(
                      @transient private val parameters: Map[String, String])
   extends Serializable {
 

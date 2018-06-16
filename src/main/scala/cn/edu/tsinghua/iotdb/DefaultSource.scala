@@ -1,10 +1,10 @@
-package cn.edu.tsinghua.tsfile
+package cn.edu.tsinghua.iotdb
 
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.sources.{BaseRelation, DataSourceRegister, RelationProvider}
 import org.slf4j.LoggerFactory
 
-private[tsfile] class DefaultSource extends RelationProvider with DataSourceRegister {
+private[iotdb] class DefaultSource extends RelationProvider with DataSourceRegister {
   private final val logger = LoggerFactory.getLogger(classOf[DefaultSource])
 
   override def shortName(): String = "tsfile"
@@ -13,12 +13,12 @@ private[tsfile] class DefaultSource extends RelationProvider with DataSourceRegi
                                sqlContext: SQLContext,
                                parameters: Map[String, String]): BaseRelation = {
 
-    val tsfileOptions = new TSFileOptions(parameters)
+    val iotdbOptions = new IoTDBOptions(parameters)
 
-    if (tsfileOptions.url == null || tsfileOptions.sql == null) {
+    if (iotdbOptions.url == null || iotdbOptions.sql == null) {
       sys.error("TSFile node or sql not specified")
     }
-    new TSFileRelation(tsfileOptions)(sqlContext.sparkSession)
+    new IoTDBRelation(iotdbOptions)(sqlContext.sparkSession)
 
   }
 }

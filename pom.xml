@@ -4,15 +4,16 @@
 
   <groupId>cn.edu.tsinghua</groupId>
   <artifactId>spark-iotdb-connector</artifactId>
-  <version>0.5.0</version>
+  <version>0.7.0</version>
   <packaging>jar</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hadoop.version>2.7.3</hadoop.version>
     <compile.version>1.8</compile.version>
-    <spark.version>2.0.0</spark.version>
+    <spark.version>2.1.0</spark.version>
     <junit.version>4.12</junit.version>
+    <iotdb.version>0.7.0</iotdb.version>
   </properties>
 
   <dependencies>
@@ -30,12 +31,12 @@
     <dependency>
       <groupId>cn.edu.tsinghua</groupId>
       <artifactId>tsfile</artifactId>
-      <version>0.5.0</version>
+      <version>${iotdb.version}</version>
     </dependency>
     <dependency>
       <groupId>cn.edu.tsinghua</groupId>
       <artifactId>iotdb-jdbc</artifactId>
-      <version>0.5.0</version>
+      <version>${iotdb.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.hadoop</groupId>
