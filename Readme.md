@@ -65,7 +65,7 @@ val sqlContext = new SQLContext(sc)
 
 val df = sqlContext.createDataFrame(rdd, schema)
 
-df.write.format("cn.edu.tsinghua.iotdb").option("url","jdbc:tsfile://127.0.0.1:6667/").option("TsIndex","1,2").option("delta_object","root.test").option("TsName","root.test.sensor1,root.test.sensor2").option("TsType","TEXT, DOUBLE").option("TsEnc","PLAIN, RLE").save
+df.write.format("cn.edu.tsinghua.iotdb").option("url","jdbc:tsfile://127.0.0.1:6667/").option("delta_object","root.test").option("TsIndex","1,2").option("TsName","root.test.sensor1,root.test.sensor2").option("TsType","TEXT, DOUBLE").option("TsEnc","PLAIN, RLE").save
 
 val df2 = spark.read.format("cn.edu.tsinghua.iotdb").option("url","jdbc:tsfile://127.0.0.1:6667/").option("sql","select * from root").load
 
