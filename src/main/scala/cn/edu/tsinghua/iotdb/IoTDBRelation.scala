@@ -71,7 +71,8 @@ private object IoTDBRelation {
   }
 }
 
-class IoTDBRelation protected[iotdb](val options: IoTDBOptions)(@transient val sparkSession: SparkSession)
+class IoTDBRelation protected[iotdb](val options: IoTDBOptions,
+                                     userSchema: StructType = null)(@transient val sparkSession: SparkSession)
   extends BaseRelation with PrunedFilteredScan {
 
   override def sqlContext: SQLContext = sparkSession.sqlContext
@@ -79,7 +80,14 @@ class IoTDBRelation protected[iotdb](val options: IoTDBOptions)(@transient val s
   private final val logger = LoggerFactory.getLogger(classOf[IoTDBRelation])
 
   override def schema: StructType = {
-    Converter.toSparkSchema(options)
+    if (this.userSchema != null) { // save mode
+      userSchema
+    } else {
+      if(options.sql == null) { // load mode
+        sys.error("TSFile sql not specified")
+      }
+      Converter.toSparkSchema(options)
+    }
   }
 
   override def buildScan(requiredColumns: Array[String], filters: Array[Filter]): RDD[Row] = {
